@@ -11,17 +11,19 @@
              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-    <!-- DispatcherServlet Context: defines this servlet's request-processing 
-        infrastructure -->
-
+    <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
     <context:property-placeholder location="classpath*:persistence.properties"/>
     <!-- Enables the Spring MVC @Controller programming model -->
     <mvc:annotation-driven/>
-
-    <!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-        up static resources in the ${webappRoot}/resources directory -->
+    <context:component-scan base-package="ua.com.krupet" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving
+    up static resources in the ${webapp}/resources directory -->
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
+    <!--
+    ========== Hibernate beans ==========
+    -->
     <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <beans:property name="driverClassName" value="${jdbc.driverClassName}"/>
         <beans:property name="url" value="${jdbc.url}"/>
@@ -34,7 +36,7 @@
         <beans:property name="dataSource" ref="dataSource"/>
         <beans:property name="annotatedClasses">
             <beans:list>
-                <beans:value>ua.com.krupet.person.Person</beans:value>
+                <beans:value>ua.com.krupet.person.PersonEntity</beans:value>
             </beans:list>
         </beans:property>
         <beans:property name="hibernateProperties">
@@ -45,21 +47,19 @@
         </beans:property>
     </beans:bean>
 
+    <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </beans:bean>
+    <!--
+    =========== end of Hibernate beans ============
+    -->
+
     <beans:bean id="personDAO" class="ua.com.krupet.person.dao.impl.PersonDAOImpl">
         <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </beans:bean>
     <beans:bean id="personService" class="ua.com.krupet.person.dao.impl.PersonServiceImpl">
         <beans:property name="personDAO" ref="personDAO"/>
     </beans:bean>
-
-    <context:component-scan base-package="ua.com.krupet" />
-
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
-    </beans:bean>
-
 
     <beans:bean id="carDAO" class="ua.com.krupet.car.CarImpl"/>
     <beans:bean id="carBean" class="ua.com.krupet.car.CarBean">

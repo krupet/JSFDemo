@@ -74,6 +74,16 @@
     <br />
     <h3>Persons List</h3>
 
+    <!--
+     I have only one question...
+     wtf render calls personService.listPersons even if
+     this whole tag (<c: .../> )is commented?????
+     WTF????
+     AAAAAAAAAAAAAAAA
+     JSF WHY???
+     this gains db queris reduntant firing.
+    -->
+
     <c:if test="${!empty personService.listPersons()}">
         <table class="tg">
             <tr>

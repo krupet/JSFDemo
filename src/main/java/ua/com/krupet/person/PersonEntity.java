@@ -7,24 +7,22 @@ import javax.persistence.*;
  * Created by krupet on 05.07.2015.
  */
 
-@ManagedBean(name="person")
-public class Person {
+@Entity
+@Table(name="person")
+public class PersonEntity {
 
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     private String name;
     private String country;
 
-    public Person() {
+    public PersonEntity() {
     }
 
-    public Person(String name, String country) {
-        this.name = name;
-        this.country = country;
-    }
-
-    public Person(int id, String name, String country) {
-        this.id = id;
+    public PersonEntity(String name, String country) {
         this.name = name;
         this.country = country;
     }
