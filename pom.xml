@@ -14,6 +14,7 @@
         <jsf.version>2.2.11</jsf.version>
         <spring.version>4.1.7.RELEASE</spring.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
+        <aspectj.version>1.7.4</aspectj.version>
     </properties>
 
     <dependencies>
@@ -102,6 +103,19 @@
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
+        </dependency>
+
+        <!-- AspectJ dependencies -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
     </dependencies>
 
