@@ -52,7 +52,10 @@ id="WebApp_ID" version="2.5">
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring-security.xml</param-value>
+        <param-value>
+            /WEB-INF/spring-security.xml
+            /WEB-INF/applicationContext.xml
+        </param-value>
     </context-param>
 
     <listener>
@@ -62,9 +65,15 @@ id="WebApp_ID" version="2.5">
     </listener>
     <listener>
         <listener-class>
-            org.springframework.web.context.request.RequestContextListener
+            org.springframework.security.web.session.HttpSessionEventPublisher
         </listener-class>
     </listener>
+
+    <!--<listener>-->
+        <!--<listener-class>-->
+            <!--org.springframework.web.context.request.RequestContextListener-->
+        <!--</listener-class>-->
+    <!--</listener>-->
 
     <session-config>
         <session-timeout>

@@ -8,22 +8,38 @@
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-       <http authentication-manager-ref="in-memory-auth">
-              <intercept-url pattern="/adm/**" access="ROLE_ADMIN" />
+       <!-- Configuring RoleVoter bean to use custom access roles, by default roles
+        should be in the form ROLE_{XXX} -->
+       <beans:bean id="roleVoter"
+                   class="org.springframework.security.access.vote.RoleVoter">
+              <beans:property name="rolePrefix" value=""/>
+       </beans:bean>
+
+       <beans:bean id="accessDecisionManager"
+                   class="org.springframework.security.access.vote.AffirmativeBased">
+              <beans:constructor-arg name="decisionVoters"
+                                     ref="roleVoter" />
+       </beans:bean>
+
+       <http authentication-manager-ref="in-memory-auth"
+             access-decision-manager-ref="accessDecisionManager">
+              <intercept-url pattern="/car.xhtml" access="Admin" />
               <form-login login-page="/login.xhtml" authentication-failure-url="/denied.xhtml"
                           username-parameter="username" password-parameter="password"
                           default-target-url="/index.xhtml" />
-              <logout invalidate-session="true" logout-success-url="/login.xhtml" logout-url="/j_spring_security_logout" />
+              <logout invalidate-session="true" logout-success-url="/index.xhtml"
+                      logout-url="/j_spring_security_logout" />
               <access-denied-handler error-page="/denied.xhtml"/>
               <session-management invalid-session-url="/login.xhtml">
-                     <concurrency-control max-sessions="1" expired-url="/login.xhtml" />
+                     <concurrency-control max-sessions="1"
+                                          expired-url="/login.xhtml" />
               </session-management>
        </http>
 
        <authentication-manager id="in-memory-auth">
               <authentication-provider>
                      <user-service>
-                            <user name="krupet" password="123" authorities="ROLE_ADMIN" />
+                            <user name="krupet" password="123" authorities="Admin" />
                      </user-service>
               </authentication-provider>
        </authentication-manager>
