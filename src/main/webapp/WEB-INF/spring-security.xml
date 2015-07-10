@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+
+       xmlns="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <http authentication-manager-ref="in-memory-auth">
+              <intercept-url pattern="/adm/**" access="ROLE_ADMIN" />
+              <form-login login-page="/login.xhtml" authentication-failure-url="/denied.xhtml"
+                          username-parameter="username" password-parameter="password"
+                          default-target-url="/index.xhtml" />
+              <logout invalidate-session="true" logout-success-url="/login.xhtml" logout-url="/j_spring_security_logout" />
+              <access-denied-handler error-page="/denied.xhtml"/>
+              <session-management invalid-session-url="/login.xhtml">
+                     <concurrency-control max-sessions="1" expired-url="/login.xhtml" />
+              </session-management>
+       </http>
+
+       <authentication-manager id="in-memory-auth">
+              <authentication-provider>
+                     <user-service>
+                            <user name="krupet" password="123" authorities="ROLE_ADMIN" />
+                     </user-service>
+              </authentication-provider>
+       </authentication-manager>
+
+</beans:beans>
